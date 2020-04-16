@@ -17,16 +17,17 @@ export default function App() {
 
   useEffect(() => {
     api.get("/repositories").then((response) => {
-      console.log(response.data);
       setRepositories(response.data);
     });
   }, []);
 
   async function handleLikeRepository(id) {
-    await api.post(`/repositories/${id}/like`);
+    const { data } = await api.post(`/repositories/${id}/like`);
     const newRepositories = repositories.map((repository) => {
       if (repository.id === id) {
-        repository.likes += 1;
+        return data;
+      } else {
+        return repository;
       }
     });
     setRepositories(newRepositories);
